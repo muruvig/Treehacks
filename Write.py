@@ -11,9 +11,10 @@ def connect():
 
 def write(database, urls=url_list):
 	for url in urls:
-		collection = database.treehacks.testData
-		json = json_return(url)
-		collection.insert(json)
+		collection = database.patientData
+		json_data = json_return(url)
+		for elem in json.loads(json_data):
+			collection.update({'case_id':elem['case_id']}, {'$set': elem}, upsert = True)
 
 def main(urls=url_list):
 	db = connect()
